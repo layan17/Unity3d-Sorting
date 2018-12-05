@@ -1,0 +1,88 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CardSorter : MonoBehaviour {
+
+    private int speed = 6;
+    private int height = 4;
+
+    #region ObjectSwap Variables
+    private bool movedUp = false;
+    private bool movedToCube = false;
+    private bool movedDown = false;
+    private bool complete = false;
+    #endregion
+
+    /// <summary>
+    /// Moves first card forward
+    /// </summary>
+    /// <param name="object1">First card</param>
+    /// <param name="object2">second card </param>
+    public string ObjectSwap(GameObject object1, GameObject object2, int endPosition)
+    {
+        //Move up
+        if (movedUp == false)
+        {
+            if (object1.transform.position.y < Mathf.RoundToInt(this.height))
+            {
+                object1.transform.Translate(Vector3.up * this.speed * Time.deltaTime, Space.World);
+                object2.transform.Translate(Vector3.down * this.speed * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                movedUp = true;
+            }
+        }
+        //Move to other cube's location
+        else if (movedToCube == false)
+        {
+            //Move to cube position
+            if (object1.transform.position.x < Mathf.RoundToInt(endPosition))
+            {
+                //Debug.Log("Going to cube");
+                object1.transform.Translate(Vector3.right * this.speed * Time.deltaTime, Space.World);
+                object2.transform.Translate(Vector3.left * this.speed * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                movedToCube = true;
+            }
+        }
+
+        //Move down
+        else if (movedDown == false)
+        {
+            if (object1.transform.position.y > Mathf.RoundToInt(0))
+            {
+                //Debug.Log("Going down: ");
+                object1.transform.Translate(Vector3.down * this.speed * Time.deltaTime, Space.World);
+                object2.transform.Translate(Vector3.up * this.speed * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                movedDown = true;
+            }
+        }
+        return "Complete";
+    }
+
+    //Sets objectSwap variables back to false.
+    public void Reset()
+    {
+        movedUp = false;
+        movedToCube = false;
+        movedDown = false;
+        complete = false;
+    }
+
+    //Returns if object swap is complete.
+    public bool Complete()
+    {
+        if (movedUp == true && movedDown == true && movedToCube == true)
+        {
+            complete = true;
+        }
+        return complete;
+    }
+}

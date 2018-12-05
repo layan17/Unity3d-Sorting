@@ -1,0 +1,96 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ShuttleSort : MonoBehaviour {
+
+    public GameObject[] cards;
+    private int[] xPosition = { -10, -5, 0, 5, 10 };
+    CardSorter sort = new CardSorter();
+    private bool button = false;
+
+    #region Steps
+    private bool step1 = false;
+    private bool step2 = false;
+    private bool step3 = false;
+    private bool step4 = false;
+    private bool step5 = false;
+    #endregion
+
+    void Update()
+    {
+        if (button == true)
+        {
+            //switch 7 with 2
+            //{7, 2, 1, 9, 5} -> {2, 7, 1, 9, 5}
+            if (step1 == false)
+            {
+                sort.ObjectSwap(cards[0], cards[1], xPosition[1]);
+
+                if (sort.Complete() == true)
+                {
+                    sort.Reset();
+                    step1 = true;
+                }
+            }
+
+            //switch 7 with 1
+            //{2, 7, 1, 9, 5} -> {2, 1, 7, 9, 5}
+            else if (step2 == false)
+            {
+                sort.ObjectSwap(cards[0], cards[2], xPosition[2]);
+
+                if (sort.Complete() == true)
+                {
+                    sort.Reset();
+                    step2 = true;
+                }
+            }
+
+            //switch 2 with 1
+            //{2, 1, 7, 9, 5} -> {1, 2, 7, 9, 5}
+            else if (step3 == false)
+            {
+                sort.ObjectSwap(cards[1], cards[2], xPosition[1]);
+
+                if (sort.Complete() == true)
+                {
+                    sort.Reset();
+                    step3 = true;
+                }
+            }
+
+            //switch 9 with 5
+            //{1, 2, 7, 9, 5} -> {1, 2, 7, 5, 9}
+            else if (step4 == false)
+            {
+                sort.ObjectSwap(cards[3], cards[4], xPosition[4]);
+
+                if (sort.Complete() == true)
+                {
+                    sort.Reset();
+                    step4 = true;
+                }
+            }
+
+            //switch 7 with 5
+            // {1, 2, 7, 5, 9} -> {1, 2, 5, 7, 9}
+            else if (step5 == false)
+            {
+                sort.ObjectSwap(cards[0], cards[4], xPosition[3]);
+
+                if (sort.Complete() == true)
+                {
+                    sort.Reset();
+                    step5 = true;
+                    button = false;
+                }
+            }
+        }
+    }
+
+    public void ClickButton()
+    {
+        button = true;
+    }
+}
